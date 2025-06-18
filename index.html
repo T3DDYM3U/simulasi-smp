@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ASPD SMP Yogyakarta</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🏫 Dashboard ASPD SMP Yogyakarta</h1>
+            <p class="subtitle">Analisis Seleksi Peserta Didik - Data Prestasi Akademik (Data :18/06/2025)</p>
+        </div>
+    </div>
+<div class="simulasi-link-banner">
+    <a href="simulasi.html">
+        <span class="icon">🔍</span>
+        <div class="text">
+            <div class="title">Coba Simulasi Peluang Masuk SMP</div>
+            <div class="desc">Klik di sini untuk prediksi peluang masuk berdasarkan nilai ASPD kamu.</div>
+        </div>
+    </a>
+</div>
+
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalStudents">-</div>
+                <div class="stat-label">Total Keseluruhan Siswa/i ASPD</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalApplicants">-</div>
+                <div class="stat-label">Total Siswa/i Jalur Prestasi Akademik</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgScore">-</div>
+                <div class="stat-label">Rata-rata Nilai</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="highestScore">-</div>
+                <div class="stat-label">Nilai Tertinggi</div>
+            </div>
+        
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div style="margin-top: 20px;">
+                <label>🏫 Pilih Sekolah untuk Analisis:</label>
+                <div class="school-selector" id="schoolSelector">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3 class="chart-title">📊 Distribusi Pilihan Sekolah</h3>
+                <canvas id="schoolChoiceChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3 class="chart-title">📈 Distribusi Nilai Siswa</h3>
+                <canvas id="scoreDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container" style="margin-bottom: 30px;">
+                <h3 class="chart-title">🎯 Analisis Tingkat Persaingan per Sekolah</h3>
+                <canvas id="competitionChart"></canvas>
+            </div>
+            <div class="chart-container" style="margin-bottom: 30px;">
+                <h3 class="chart-title">🏆 Peringkat SMP Berdasarkan Rata-rata Nilai Pendaftar</h3>
+                <div id="schoolRanking">Memuat ranking...</div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-container">
+            <h3 class="chart-title">📋 Data Detail ASPD</h3>
+            <div style="margin-bottom: 15px; font-size: 0.9rem; color: #7f8c8d;">
+                Total data yang ditampilkan: <span id="displayedRows">0</span> baris
+            </div>
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Range Nilai</th>
+                        <th>Jumlah Siswa</th>
+                        <th>SMP 1</th>
+                        <th>SMP 2</th>
+                        <th>SMP 3</th>
+                        <th>SMP 4</th>
+                        <th>SMP 5</th>
+                        <th>SMP 6</th>
+                        <th>SMP 7</th>
+                        <th>SMP 8</th>
+                        <th>SMP 9</th>
+                        <th>SMP 10</th>
+                        <th>SMP 11</th>
+                        <th>SMP 12</th>
+                        <th>SMP 13</th>
+                        <th>SMP 14</th>
+                        <th>SMP 15</th>
+                        <th>Sisa</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="18" class="loading">Memuat data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
