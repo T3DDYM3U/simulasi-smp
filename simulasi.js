@@ -8,7 +8,7 @@ const kuotaSMP = {
 
 // Load data otomatis
 window.addEventListener('DOMContentLoaded', () => {
-    fetch('DataPrestasiAkademik.csv')
+    fetch('DataPrestasiAkademikNew.csv')
         .then(res => res.text())
         .then(text => {
             Papa.parse(text, {
