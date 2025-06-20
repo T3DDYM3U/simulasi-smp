@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Load default CSV data from the uploaded file
 async function loadDefaultData() {
     try {
-        const response = await fetch('DataPrestasiAkademik.csv');
+        const response = await fetch('DataPrestasiAkademikNew.csv');
         if (!response.ok) {
             throw new Error('CSV file not found');
         }
