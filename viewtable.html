@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard PPDB SMP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-section {
+            margin-bottom: 25px;
+        }
+
+        .tab-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #495057;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab.active {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border-color: #007bff;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .secondary-tabs .tab.active {
+            background: linear-gradient(45deg, #28a745, #1e7e34);
+            border-color: #28a745;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .statistics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input, .sort-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 200px;
+        }
+
+        .search-input:focus, .sort-select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            transition: background-color 0.2s ease;
+        }
+
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #fdfdfd;
+        }
+
+        tr:nth-child(even):hover td {
+            background-color: #f0f0f0;
+        }
+
+        .no-data {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-data-content {
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .no-data-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                justify-content: center;
+            }
+            
+            .tab {
+                padding: 10px 16px;
+                font-size: 14px;
+                min-width: 100px;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .table-controls {
+                justify-content: center;
+            }
+            
+            .search-input, .sort-select {
+                min-width: 150px;
+            }
+            
+            .statistics {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 20px;
+            }
+            
+            .tab {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dashboard Penerimaan Peserta Didik Baru</h1>
+            <p>Sistem Informasi PPDB SMP</p>
+        </header>
+
+        <div id="dashboard" class="dashboard" style="display: none;">
+            <!-- Tab Jalur Pendaftaran -->
+            <div class="tab-section">
+                <h3>Jalur Pendaftaran</h3>
+                <div id="jalurTabs" class="tabs"></div>
+            </div>
+
+            <!-- Tab Sekolah Tujuan -->
+            <div class="tab-section">
+                <h3>Sekolah Tujuan</h3>
+                <div id="sekolahTabs" class="tabs secondary-tabs"></div>
+            </div>
+
+            <!-- Statistik -->
+            <div id="statistics" class="statistics"></div>
+
+            <!-- Tabel Data -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 id="tableTitle">Data Pendaftar</h3>
+                    <div class="table-controls">
+                        <input type="text" id="searchInput" placeholder="Cari nama siswa..." class="search-input">
+                        <select id="sortSelect" class="sort-select">
+                            <option value="nama">Urutkan berdasarkan Nama</option>
+                            <option value="aspd">Urutkan berdasarkan Total ASPD</option>
+                            <option value="nilai">Urutkan berdasarkan Total Nilai</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Lengkap</th>
+                                <th>Asal Sekolah</th>
+                                <th>Total ASPD</th>
+                                <th>Total Nilai Gabungan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="noData" class="no-data">
+            <div class="no-data-content">
+                <div class="loading-spinner"></div>
+                <h3>Loading...</h3>
+                <p>Memuat data pendaftaran</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script>
+        let allData = [];
+        let filteredData = [];
+        let currentJalur = '';
+        let currentSekolah = '';
+
+        // DOM Elements
+        const dashboard = document.getElementById('dashboard');
+        const noData = document.getElementById('noData');
+        const jalurTabs = document.getElementById('jalurTabs');
+        const sekolahTabs = document.getElementById('sekolahTabs');
+        const statistics = document.getElementById('statistics');
+        const tableBody = document.getElementById('tableBody');
+        const tableTitle = document.getElementById('tableTitle');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+
+        // Event Listeners
+        searchInput.addEventListener('input', handleSearch);
+        sortSelect.addEventListener('change', handleSort);
+
+        // Auto load CSV on page load
+        window.addEventListener('load', () => {
+            loadCSVFile('semua_data_pendaftaran_old.csv');
+        });
+
+        async function loadCSVFile(filename) {
+            try {
+                const response = await fetch(filename);
+                if (response.ok) {
+                    const csvText = await response.text();
+                    parseCSV(csvText);
+                } else {
+                    showNoDataMessage();
+                }
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+                showNoDataMessage();
+            }
+        }
+
+        function showNoDataMessage() {
+            noData.innerHTML = `
+                <div class="no-data-content">
+                    <h3>Data Tidak Ditemukan</h3>
+                    <p>File CSV tidak ditemukan. Pastikan file "semua_data_pendaftaran_old.csv" tersedia.</p>
+                </div>
+            `;
+        }
+
+        function parseCSV(csvText) {
+            Papa.parse(csvText, {
+                header: true,
+                skipEmptyLines: true,
+                dynamicTyping: true,
+                complete: function(results) {
+                    if (results.errors.length > 0) {
+                        console.error('CSV parsing errors:', results.errors);
+                        showNoDataMessage();
+                        return;
+                    }
+                    
+                    // Clean and process data
+                    allData = results.data.map((row, index) => ({
+                        no: row.No || index + 1,
+                        jalur: (row['Jalur Pendaftaran'] || '').toString().trim(),
+                        sekolah: (row['Sekolah Tujuan'] || '').toString().trim(),
+                        nama: (row['Nama Lengkap'] || '').toString().trim(),
+                        asalSekolah: (row['Asal Sekolah'] || '').toString().trim(),
+                        totalASPD: parseFloat(row['Total ASPD']) || 0,
+                        totalNilai: parseFloat(row['Total Nilai Gabungan']) || 0
+                    })).filter(row => row.nama && row.jalur && row.sekolah);
+                    
+                    if (allData.length > 0) {
+                        initializeDashboard();
+                    } else {
+                        showNoDataMessage();
+                    }
+                }
+            });
+        }
+
+        function initializeDashboard() {
+            createJalurTabs();
+            dashboard.style.display = 'block';
+            noData.style.display = 'none';
+        }
+
+        function createJalurTabs() {
+            const jalurList = [...new Set(allData.map(item => item.jalur))].filter(jalur => jalur).sort();
+            jalurTabs.innerHTML = '';
+            
+            jalurList.forEach((jalur, index) => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${index === 0 ? 'active' : ''}`;
+                tab.textContent = jalur;
+                tab.addEventListener('click', () => selectJalur(jalur));
+                jalurTabs.appendChild(tab);
+            });
+            
+            if (jalurList.length > 0) {
+                selectJalur(jalurList[0]);
+            }
+        }
+
+        function selectJalur(jalur) {
+            currentJalur = jalur;
+            
+            // Update active tab
+            document.querySelectorAll('#jalurTabs .tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === jalur);
+            });
+            
+            createSekolahTabs();
+        }
+
+        // Function untuk natural sorting nama sekolah
+        function naturalSort(a, b) {
+            const regex = /(\d+)/g;
+            const aTokens = a.toLowerCase().split(regex);
+            const bTokens = b.toLowerCase().split(regex);
+            
+            const maxLength = Math.max(aTokens.length, bTokens.length);
+            
+            for (let i = 0; i < maxLength; i++) {
+                const aToken = aTokens[i] || '';
+                const bToken = bTokens[i] || '';
+                
+                // Jika kedua token adalah angka
+                if (/^\d+$/.test(aToken) && /^\d+$/.test(bToken)) {
+                    const diff = parseInt(aToken, 10) - parseInt(bToken, 10);
+                    if (diff !== 0) return diff;
+                } else {
+                    // Perbandingan string biasa
+                    if (aToken !== bToken) {
+                        return aToken.localeCompare(bToken);
+                    }
+                }
+            }
+            
+            return 0;
+        }
+
+        function createSekolahTabs() {
+            const jalurData = allData.filter(item => item.jalur === currentJalur);
+            const sekolahList = [...new Set(jalurData.map(item => item.sekolah))]
+                .filter(sekolah => sekolah)
+                .sort(naturalSort); // Menggunakan natural sort
+            
+            sekolahTabs.innerHTML = '';
+            
+            sekolahList.forEach((sekolah, index) => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${index === 0 ? 'active' : ''}`;
+                tab.textContent = sekolah;
+                tab.addEventListener('click', () => selectSekolah(sekolah));
+                sekolahTabs.appendChild(tab);
+            });
+            
+            if (sekolahList.length > 0) {
+                selectSekolah(sekolahList[0]);
+            }
+        }
+
+        function selectSekolah(sekolah) {
+            currentSekolah = sekolah;
+            
+            // Update active tab
+            document.querySelectorAll('#sekolahTabs .tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === sekolah);
+            });
+            
+            filterAndDisplayData();
+            updateTableTitle();
+            updateStatistics();
+        }
+
+        function filterAndDisplayData() {
+            filteredData = allData.filter(item => 
+                item.jalur === currentJalur && item.sekolah === currentSekolah
+            );
+            
+            applySearchAndSort();
+        }
+
+        function applySearchAndSort() {
+            let displayData = [...filteredData];
+            
+            // Apply search filter
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm) {
+                displayData = displayData.filter(item =>
+                    item.nama.toLowerCase().includes(searchTerm) ||
+                    item.asalSekolah.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Apply sorting
+            const sortBy = sortSelect.value;
+            displayData.sort((a, b) => {
+                switch (sortBy) {
+                    case 'nama':
+                        return a.nama.localeCompare(b.nama);
+                    case 'aspd':
+                        return b.totalASPD - a.totalASPD;
+                    case 'nilai':
+                        return b.totalNilai - a.totalNilai;
+                    default:
+                        return 0;
+                }
+            });
+            
+            displayTable(displayData);
+        }
+
+        function displayTable(data) {
+            tableBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="5" style="text-align: center; padding: 20px; color: #6c757d;">Tidak ada data yang ditemukan</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td style="font-weight: 500;">${item.nama}</td>
+                    <td>${item.asalSekolah}</td>
+                    <td style="text-align: right; font-weight: 500;">${item.totalASPD.toFixed(2)}</td>
+                    <td style="text-align: right; font-weight: 500;">${item.totalNilai.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updateStatistics() {
+            const jalurData = allData.filter(item => item.jalur === currentJalur);
+            const sekolahData = allData.filter(item => item.jalur === currentJalur && item.sekolah === currentSekolah);
+            const sekolahList = [...new Set(jalurData.map(item => item.sekolah))];
+            
+            let statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${jalurData.length}</div>
+                    <div class="stat-label">Total Pendaftar ${currentJalur}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${sekolahData.length}</div>
+                    <div class="stat-label">Pendaftar ${currentSekolah}</div>
+                </div>
+
+            `;
+            
+            if (sekolahData.length > 0) {
+                const avgASPD = sekolahData.reduce((sum, item) => sum + item.totalASPD, 0) / sekolahData.length;
+                const maxASPD = Math.max(...sekolahData.map(item => item.totalASPD));
+                
+                statsHTML += `
+                    <div class="stat-card">
+                        <div class="stat-number">${avgASPD.toFixed(1)}</div>
+                        <div class="stat-label">Rata-rata ASPD</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${maxASPD.toFixed(1)}</div>
+                        <div class="stat-label">ASPD Tertinggi</div>
+                    </div>
+                `;
+            }
+            
+            statistics.innerHTML = statsHTML;
+        }
+
+        function updateTableTitle() {
+            tableTitle.textContent = `Data Pendaftar - ${currentJalur} (${currentSekolah})`;
+        }
+
+        function handleSearch() {
+            applySearchAndSort();
+        }
+
+        function handleSort() {
+            applySearchAndSort();
+        }
+    </script>
+</body>
+</html>
