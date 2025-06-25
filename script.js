@@ -24,7 +24,7 @@ async function loadDefaultData() {
         }
         const csvText = await response.text();
         processCSVData(csvText);
-        showMessage('Data CSV berhasil dimuat otomatis.', 'success');
+        //showMessage('Data CSV berhasil dimuat otomatis.', 'success');
     } catch (error) {
         console.error('Gagal memuat CSV:', error);
         showMessage('Gagal memuat CSV bawaan. Silakan upload manual.', 'error');
