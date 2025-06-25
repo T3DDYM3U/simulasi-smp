@@ -3,7 +3,7 @@ let rawData = [];
 const kuotaSMP = {
     smp1: 116, smp2: 91, smp3: 77, smp4: 64, smp5: 128,
     smp6: 91, smp7: 77, smp8: 128, smp9: 102, smp10: 46,
-    smp11: 52, smp12: 77, smp13: 25, smp14: 52, smp15: 128
+    smp11: 52, smp12: 77, smp13: 25, smp14: 52, smp15: 128, smp16: 91
 };
 
 // Load data otomatis
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         rangeEnd: parseFloat(row['N.Akhir']) || 0,
                         totalStudents: parseInt(row['Jumlah']) || 0,
                         remaining: parseInt(row['Total Akhir Jumlah']) || 0,
-                        ...Object.fromEntries([...Array(15)].map((_, i) => [`smp${i+1}`, parseInt(row[`SMP${i+1}`]) || 0]))
+                        ...Object.fromEntries([...Array(16)].map((_, i) => [`smp${i+1}`, parseInt(row[`SMP${i+1}`]) || 0]))
                     }));
 
                     // ✅ Sekarang kamu boleh panggil fungsi-fungsi yang butuh rawData:
@@ -293,7 +293,7 @@ function simulasiDenganAsumsiDistribusi(nilaiKita, sekolahTujuanKey) {
 const schoolNames = [
   "SMP 1", "SMP 2", "SMP 3", "SMP 4", "SMP 5",
   "SMP 6", "SMP 7", "SMP 8", "SMP 9", "SMP 10",
-  "SMP 11", "SMP 12", "SMP 13", "SMP 14", "SMP 15"
+  "SMP 11", "SMP 12", "SMP 13", "SMP 14", "SMP 15", "SMP 16"
 ];
 
 function getSchoolRanking() {
