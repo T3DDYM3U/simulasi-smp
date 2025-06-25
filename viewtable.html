@@ -96,11 +96,12 @@
             padding-right: 18px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        .stats-grid-button {
+            display: flex;
+            justify-content: center; /* untuk mengumpulkan di tengah */
+            gap: 20px; /* jarak antar tombol */
             margin-bottom: 30px;
+            flex-wrap: wrap; /* agar responsif saat layar kecil */
         }
 
 
