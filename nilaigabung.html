@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Nilai Gabungan ASPD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .contain {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .stats-grid-button {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+    .simulasi-link-banner {
+            background: linear-gradient(135deg, #2980b9, #6dd5fa);
+            color: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin: 30px auto;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .simulasi-link-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .simulasi-link-banner a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+        }
+
+        .simulasi-link-banner .icon {
+            font-size: 2rem;
+        }
+
+        .simulasi-link-banner .text {
+            flex: 1;
+        }
+
+        .simulasi-link-banner .title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .simulasi-link-banner .desc {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .icon {
+            padding-right: 18px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .calculate-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .results {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border-left: 5px solid #667eea;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.1em;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .result-label {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .final-result .result-value {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid-button {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .simulasi-link-banner a {
+                min-width: 200px;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contain {
+                padding: 0 10px;
+            }
+            
+            .simulasi-link-banner a {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contain">
+        <div class="stats-grid-button">    
+            <div class="simulasi-link-banner">
+                <a href="index.html">
+                    <span class="icon">⬅️</span>
+                    <div class="text">
+                        <div class="title">Kembali ke Dashboard Utama</div>
+                    </div>
+                </a>
+            </div>
+
+        <div class="simulasi-link-banner">
+            <a href="viewtable.html">
+                <span class="icon">📊</span>
+                <div class="text">
+                    <div class="title">Data List Jalur Pendaftaran</div>
+                    
+                </div>
+            </a>
+        </div>
+
+            <div class="simulasi-link-banner">
+                <a href="simulasi.html">
+                    <span class="icon">🎯</span>
+                    <div class="text">
+                        <div class="title">Simulasi Peluang Masuk SMP</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Kalkulator Nilai Gabungan ASPD</h1>
+            <p>Masukkan nilai ASPD dan Rapor untuk menghitung nilai gabungan</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="aspdValue">Jumlah ASPD</label>
+                    <input type="number" id="aspdValue" step="0.01" placeholder="Contoh: 248.57">
+                </div>
+                <div class="input-group">
+                    <label for="raporValue">Nilai Rapor (SKNR)</label>
+                    <input type="number" id="raporValue" step="0.01" placeholder="Contoh: 528.00">
+                </div>
+            </div>
+            <button class="calculate-btn" onclick="calculateASPD()">Hitung Nilai Gabungan</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="result-item">
+                <span class="result-label">Jumlah ASPD:</span>
+                <span class="result-value" id="displayASPD">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Nilai Rapor (SKNR):</span>
+                <span class="result-value" id="displayRapor">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Total Nilai ASPD (80%):</span>
+                <span class="result-value" id="totalASPD">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Total Nilai Rapor (10%):</span>
+                <span class="result-value" id="totalRapor">-</span>
+            </div>
+            <div class="result-item final-result">
+                <span class="result-label">Nilai Gabungan:</span>
+                <span class="result-value" id="nilaiGabungan">-</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateASPD() {
+            const aspdValue = parseFloat(document.getElementById('aspdValue').value);
+            const raporValue = parseFloat(document.getElementById('raporValue').value);
+
+            // Validasi input
+            if (isNaN(aspdValue) || isNaN(raporValue)) {
+                alert('Silakan masukkan nilai yang valid untuk kedua field!');
+                return;
+            }
+
+            if (aspdValue < 0 || raporValue < 0) {
+                alert('Nilai tidak boleh negatif!');
+                return;
+            }
+
+            // Hitung berdasarkan rumus
+            const totalASPD = aspdValue * 0.8; // 80% dari ASPD
+            const totalRapor = raporValue * 0.1; // 10% dari Rapor
+            const nilaiGabungan = totalASPD + totalRapor;
+
+            // Tampilkan hasil
+            document.getElementById('displayASPD').textContent = aspdValue.toFixed(2);
+            document.getElementById('displayRapor').textContent = raporValue.toFixed(2);
+            document.getElementById('totalASPD').textContent = totalASPD.toFixed(2);
+            document.getElementById('totalRapor').textContent = totalRapor.toFixed(2);
+            document.getElementById('nilaiGabungan').textContent = nilaiGabungan.toFixed(2);
+
+            // Tampilkan section hasil
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.add('show');
+            
+            // Scroll ke hasil
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Event listener untuk Enter key
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateASPD();
+            }
+        });
+
+        // Auto-calculate saat nilai berubah
+        document.getElementById('aspdValue').addEventListener('input', function() {
+            const aspdValue = this.value;
+            const raporValue = document.getElementById('raporValue').value;
+            if (aspdValue && raporValue) {
+                calculateASPD();
+            }
+        });
+
+        document.getElementById('raporValue').addEventListener('input', function() {
+            const aspdValue = document.getElementById('aspdValue').value;
+            const raporValue = this.value;
+            if (aspdValue && raporValue) {
+                calculateASPD();
+            }
+        });
+    </script>
+</body>
+</html>
