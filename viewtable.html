@@ -98,10 +98,11 @@
 
         .stats-grid-button {
             display: flex;
-            justify-content: center; /* untuk mengumpulkan di tengah */
-            gap: 20px; /* jarak antar tombol */
+            justify-content: center;      /* agar elemen berada di tengah secara horizontal */
+            align-items: stretch;         /* agar tingginya konsisten */
+            gap: 20px;                    /* jarak antar tombol */
             margin-bottom: 30px;
-            flex-wrap: wrap; /* agar responsif saat layar kecil */
+            flex-wrap: nowrap;           /* agar tidak turun ke bawah */
         }
 
 
