@@ -47,6 +47,22 @@ h1 {
     margin-bottom: 30px;
 }
 
+.contain {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 0 20px;
+}
+
+        .stats-grid-button {
+              display: flex;
+              justify-content: center;
+              gap: 20px;
+              margin-bottom: 30px;
+              flex-wrap: wrap;
+        }
+
+
+
 .stat-card {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
