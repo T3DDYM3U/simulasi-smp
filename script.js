@@ -6,7 +6,7 @@ let charts = {};
 // School names mapping
 const schoolNames = [
     'SMP 1', 'SMP 2', 'SMP 3', 'SMP 4', 'SMP 5', 'SMP 6', 'SMP 7', 'SMP 8',
-    'SMP 9', 'SMP 10', 'SMP 11', 'SMP 12', 'SMP 13', 'SMP 14', 'SMP 15'
+    'SMP 9', 'SMP 10', 'SMP 11', 'SMP 12', 'SMP 13', 'SMP 14', 'SMP 15', 'SMP 16'
 ];
 
 // Initialize dashboard
@@ -60,6 +60,7 @@ function processCSVData(csvText) {
                     smp13: parseInt(row['SMP13']) || 0,
                     smp14: parseInt(row['SMP14']) || 0,
                     smp15: parseInt(row['SMP15']) || 0,
+                    smp16: parseInt(row['SMP16']) || 0,
                     remaining: parseInt(row['Total Akhir Jumlah']) || 0
                 };
                 return processedRow;
@@ -94,7 +95,7 @@ function updateStatistics() {
         const midScore = (row.rangeStart + row.rangeEnd) / 2;
         let applicantsInRow = 0;
 
-        for (let i = 1; i <= 15; i++) {
+        for (let i = 1; i <= 16; i++) {
             applicantsInRow += row[`smp${i}`] || 0;
         }
 
@@ -331,8 +332,8 @@ function updateDataTable() {
                 <td style="font-weight: 600; color: #3498db;">${row.totalStudents}</td>
         `;
         
-        // Tambahkan 15 kolom SMP dengan transparansi jika 0
-        for (let i = 1; i <= 15; i++) {
+        // Tambahkan 16 kolom SMP dengan transparansi jika 0
+        for (let i = 1; i <= 16; i++) {
             const key = `smp${i}`;
             const value = row[key];
             const isZero = value === 0;
@@ -376,7 +377,7 @@ function toggleSchoolFilter(chip, schoolIndex) {
             .filter(row => activeSchools.some(schoolNum => row[`smp${schoolNum}`] > 0))
             .map(row => {
                 const newRow = { ...row };
-                for (let i = 1; i <= 15; i++) {
+                for (let i = 1; i <= 16; i++) {
                     if (!activeSchools.includes(i)) {
                         newRow[`smp${i}`] = 0; // kosongkan yang tidak terpilih
                     }
